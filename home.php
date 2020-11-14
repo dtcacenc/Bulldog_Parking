@@ -74,7 +74,7 @@
 	          <a class="nav-link" href="account.php">Account</a>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link " href="carpool.php"><i>Carpool</i></a>
+	          <a class="nav-link " href="carpool.php"><i>Carpool (alpha)</i></a>
 	        </li>
 	       	<li class="nav-item">
 	          <a class="nav-link" href="feedback.php">Feedback</a>
@@ -280,17 +280,17 @@
                                     $dist_to_lot = $array['p'.$z];
                                 }
                             }
-                            echo "<a href='https://www.google.com/maps/search/?api=1&query=" .$row['coordinates']. "'>";
-                            echo "<tr id='" . $row['lotID'] . "' class='card-header' data-toggle='collapse' data-target='#hide" . $row['lotID'] . "'>";
+                            echo "<a href='https://www.google.com/maps/search/?api=1&query=" .$row['coordinates']. "' >";
+                            echo "<tr id='" . $row['lotID'] . "' class='card-header' data-toggle='collapse' data-target='#hide" . $row['lotID'] . "' >";
                             echo "<td ". $_SESSION['hidden_attr'] ." id=" . $dist_to_lot  . ">." .$dist_to_lot. " miles</td>";
-                            echo "<td><a href='https://www.google.com/maps/search/?api=1&query=" .$row['coordinates']. "'> P" . $row['lotID'] . "</a></td>";
+                            echo "<td><a href='https://www.google.com/maps/search/?api=1&query=" .$row['coordinates']. "' target='_blank'> P" . $row['lotID'] . "</a></td>";
                             echo "<td>" . $row['type'] . "</td>";
                             echo "<td id='P" . $row['lotID'] . "_capacity'>" . $row['total_capacity'] . " </td>";
                             echo "<td><div id='progress'><div class='progress_bar' id='progress_bar" . $row['lotID'] . "'></div></div></td>";
                             echo "</tr>";
                             echo "</a>";
                             
-                            /* Buttons [deprecated]
+                            /* Buttons: [...deprecated]
                              echo"<tr >
                                             <td >
                                                 <a  class=\"btn btn-secondary\" href='https://www.google.com/maps/search/?api=1&query=" .$row['coordinates']. "'>Google Maps</a>
@@ -389,6 +389,11 @@
     	</script>
     </div>
     <!-- /.container -->
+	  <div class="footer-copyright text-center py-3">
+        	<small>Distances based on  
+        		<a href="https://cloud.google.com/maps-platform/routes/?utm_source=google&utm_medium=cpc&utm_campaign=FY18-Q2-global-demandgen-paidsearchonnetworkhouseads-cs-maps_contactsal_saf&utm_content=text-ad-none-none-DEV_c-CRE_289050149706-ADGP_Hybrid%20%7C%20AW%20SEM%20%7C%20SKWS%20~%20Distance%20API-KWID_43700035908081180-kwd-514129572874-userloc_9010332&utm_term=KW_%2Bdistance%20%2Bapi-ST_%2Bdistance%20%2Bapi&gclid=CjwKCAiAtK79BRAIEiwA4OskBrklNiFBCatwXlFj6dRsfDp9f-sEQT8o2qi84GIXdIhQKQB_Uo8EQRoCyUYQAvD_BwE" >Google Distance Matrix API © 2020</a>
+        	</small>
+  		</div>
 </body>
 
 </html>

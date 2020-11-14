@@ -1,5 +1,6 @@
 <?php 
     require_once 'config.php';
+    require_once 'google-api-php-client-2.4.0/vendor/autoload.php';
     if(!isset($_SESSION['access_token'])){
         header('Location: index.php');
         exit();
@@ -27,6 +28,23 @@
             $about=$row[0];
         }
     }
+    // Getting current "address" from the user database 
+    $sql = "SELECT address FROM drawertl_dtcacencDB.users
+                         WHERE google_ID=" . $_SESSION['google_ID'] . ";";
+    if($result = mysqli_query($link, $sql)){
+        while ($row = $result->fetch_row()) {
+            $_SESSION['autocomplete_addr']=$row[0];
+        }
+    }
+    
+    // Getting current "address" from the user database
+    $sql = "SELECT distance_to_UNCA FROM drawertl_dtcacencDB.users
+                         WHERE google_ID=" . $_SESSION['google_ID'] . ";";
+    if($result = mysqli_query($link, $sql)){
+        while ($row = $result->fetch_row()) {
+            $_SESSION['time_to_UNCA']=$row[0];
+        }
+    }
     // Close connection
     mysqli_close($link);
 ?>
@@ -47,6 +65,31 @@
    	 <script src="js/bootstrap.bundle.js" type="text/javascript" defer></script>
    	 <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
    	 <script src="js/EasyAutocomplete-1.3.5/jquery.easy-autocomplete.min.js"></script>
+
+    <style>
+         .animated {
+            background-repeat: no-repeat;
+            -webkit-animation-duration: 1.5s;
+            animation-duration: 1.5s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+         }
+         
+         @-webkit-keyframes fadeIn {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+         }
+         
+         @keyframes fadeIn {
+            0% {opacity: 0;}
+            100% {opacity: 1;}
+         }
+         
+         .fadeIn {
+            -webkit-animation-name: fadeIn;
+            animation-name: fadeIn;
+         }
+    </style>
 </head>
 
 
@@ -71,7 +114,7 @@
 	          <span class="sr-only">(current)</span>
 	        </li>
 	        <li class="nav-item">
-	          <a class="nav-link " href="carpool.php"><i>Carpool</i></a>
+	          <a class="nav-link " href="carpool.php"><i>Carpool (alpha)</i></a>
 	        </li>
 	        <li class="nav-item">
 	          <a class="nav-link" href="feedback.php">Feedback</a>
@@ -88,7 +131,7 @@
 	<!-- Page Content -->
     <div class="container">
    <div class="row flex-lg-nowrap">
-
+<div class = "animated fadeIn">
   <div class="col">
     <div class="row">
       <div class="col mb-3">
@@ -143,7 +186,7 @@
         </div>
       </div>
     </div>
-
+</div>
   </div>
 </div>
 

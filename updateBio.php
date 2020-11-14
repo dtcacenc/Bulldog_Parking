@@ -4,7 +4,7 @@ if(!isset($_SESSION['access_token'])){
     header('Location: index.php');
     exit();
 }   
-$SESSION['debug'] = false;
+$_SESSION['debug'] = false;
 
 
 // Establishing Link with Database

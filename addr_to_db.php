@@ -63,10 +63,9 @@ if($link === false){
 }
 
 
-/* Calculate Distance Between Current User and All Other Users*/
+/* Update $_SESSION user address */
 $_SESSION['autocomplete_addr'] = $_POST['autocomplete'];
 $user1_addr = mysqli_escape_string($link, $_POST['autocomplete']);
-$user1_email = mysqli_escape_string($link, $_SESSION['email']);
 
 // Update the new address provided by current user into table
 $sql = "UPDATE drawertl_dtcacencDB.users
@@ -74,66 +73,6 @@ $sql = "UPDATE drawertl_dtcacencDB.users
                     WHERE google_ID=".$_SESSION['google_ID'] . ";";
 if(!($result = mysqli_query($link, $sql))){
     echo "Failed to connect to MySQL: " . $result -> connect_error;
-}
-
-// Select all addresses+emails from user table
-$sql = "SELECT address, email  FROM drawertl_dtcacencDB.users;";
-
-$user2_addr = "";
-$user_to_user_distance = 0;
-if($result = mysqli_query($link, $sql)){
-    while ($row = $result->fetch_row()) {
-        $user2_addr = $row[0];
-        $user2_email = $row[1];
-
-        // build URL request
-        $url_base = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=";
-        $a = $user1_addr . "&destinations=";
-        $b = $user2_addr;
-        $c = "&key=AIzaSyDGWyTjn7CiwzGc1UeirymO3H-6HIk2F4w";
-        $url = $url_base . $a . $b . $c;
-        $response = $client->get($url);
-        
-        // handle response
-        if ($response->getStatusCode() == 200){
-            $json_array = json_decode($response->getBody(), true);
-            $origin_addr = $json_array['origin_addresses'];
-            $dest_addr = $json_array['destination_addresses'];
-            $info = $json_array['rows'];
-            if($_SESSION['debug']){
-                foreach($origin_addr as $addr){
-                    echo "<br>___Origin: ";
-                    //echo $origin;
-                    echo $addr;
-                    echo "<br>";
-                }
-                foreach( $dest_addr as $addr){
-                    echo "Destination: ";
-                    //echo $dest;
-                    echo $addr;
-                    echo "<br>";
-                }
-            }
-            foreach($info as $i){
-                foreach($i['elements'] as $elem){
-                    if($_SESSION['debug']){
-                        //echo $elem['distance']['text'] . "<br>";
-                        echo "Duration: ";
-                        echo $elem['duration']['text'] . " / " . $elem['duration']['value'] ."<br>";
-                    }
-                    $user_to_user_distance = $elem['duration']['value'];
-                    $id = $user1_email . $user2_email; 
-                    $reverse_id= $user2_email . $user1_email;
-                    // Populate Table
-                    $sql_stmt = "INSERT INTO drawertl_dtcacencDB.user_to_user_distance(id, reverse_id, distance)
-                            VALUES ('".$id."', '". $reverse_id. "', ".$user_to_user_distance.");";
-                    if(!($r = mysqli_query($link, $sql_stmt))){
-                        echo "Error." . mysqli_error($link);
-                    }
-                }
-            }
-        }
-    }
 }
 
 
